@@ -1,0 +1,16 @@
+<%= form_with url: path, method: method do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :review_rating %>
+  <%= f.number_field :review_rating %>
+
+  <%= f.label :on_call %>
+  <% if checked_value %>
+    <%= f.check_box :on_call, checked_value: checked_value %>
+  <% else %>
+    <%= f.check_box :on_call %>
+  <% end %>
+    
+  <%= f.submit %>
+<% end %>

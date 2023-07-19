@@ -4,18 +4,21 @@
 
 <h3>Pets</h3>
 <% @application.application_pets.each do |app_pet| %>
-  <p>Pet Name: <%= app_pet.pet.name %></p>
 
-  <% if app_pet.status == "Approved" %>
-    <p>Approved</p>
-  <% elsif app_pet.status == "Rejected" %>
-    <p>Rejected</p>
-  <% else %>
-    <div class="button-group">
-      <%= button_to "Approve", "/admin/applications/#{app_pet.application.id}/#{app_pet.id}", method: :patch, data: { turbo: false }, name: "commit", value: "Approve" %>
-      <%= button_to "Reject", "/admin/applications/#{app_pet.application.id}/#{app_pet.id}", method: :patch, data: { turbo: false }, name: "commit", value: "Reject" %>
-    </div>
-  <% end %>
+  <div id="app_pet_<%= app_pet.id %>">
+    <p>Pet Name: <%= app_pet.pet.name %></p>
+
+    <% if app_pet.status == "Approved" %>
+      <p>Approved</p>
+    <% elsif app_pet.status == "Rejected" %>
+      <p>Rejected</p>
+    <% else %>
+      <div class="button-group">
+        <%= button_to "Approve", "/admin/applications/#{app_pet.application.id}/#{app_pet.id}", method: :patch, data: { turbo: false }, name: "commit", value: "Approve" %>
+        <%= button_to "Reject", "/admin/applications/#{app_pet.application.id}/#{app_pet.id}", method: :patch, data: { turbo: false }, name: "commit", value: "Reject" %>
+      </div>
+    <% end %>
+  </div>
 <% end %>
 
 

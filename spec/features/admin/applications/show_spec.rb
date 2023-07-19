@@ -98,5 +98,66 @@ RSpec.describe "Admin Applications Show Page" do
         end
       end
     end
+
+    describe "When there are two applications in the system for the same pet" do
+      before(:each) do
+        @penny_app_lucille_pet = ApplicationPet.create!(application_id: @penny_lane_app.id, pet_id: @lucille.id, status: "Pending")
+      end
+
+      describe "When I visit the admin application show page for one of the applications and I approve or reject the pet for that application" do
+
+        describe "When I visit the other application's admin show page" do
+
+          it "Then I do not see that the pet has been accepted or rejected for that application" do
+
+            visit "/admin/applications/#{@paul_app.id}"
+
+            within("div#app_pet_#{@paul_pet.id}") do
+              expect(page).to have_content("Pet Name: Lucille")
+              expect(page).to have_button("Approve")
+              expect(page).to have_button("Reject")
+              
+              click_button "Approve"
+              
+              expect(page).to have_content("Approved")
+              expect(page).to_not have_button("Reject")
+              expect(page).to_not have_button("Approve")
+            end
+
+            visit "/admin/applications/#{@penny_lane_app.id}"
+
+            within("div#app_pet_#{@penny_app_lucille_pet.id}") do
+              expect(page).to have_content("Pet Name: Lucille")
+              expect(page).to_not have_content("Rejected")
+            end
+          end
+
+          it "And instead I see buttons to approve or reject the pet for this specific application" do
+            visit "/admin/applications/#{@paul_app.id}"
+
+            within("div#app_pet_#{@paul_pet.id}") do
+              expect(page).to have_content("Pet Name: Lucille")
+              expect(page).to have_button("Approve")
+              expect(page).to have_button("Reject")
+              
+              click_button "Approve"
+              
+              expect(page).to have_content("Approved")
+              expect(page).to_not have_button("Reject")
+              expect(page).to_not have_button("Approve")
+            end
+
+            visit "/admin/applications/#{@penny_lane_app.id}"
+
+            within("div#app_pet_#{@penny_app_lucille_pet.id}") do
+              expect(page).to have_content("Pet Name: Lucille")
+              expect(page).to have_button("Approve")
+              expect(page).to have_button("Reject")
+            end
+          end
+        end
+      end
+
+    end
   end
 end
